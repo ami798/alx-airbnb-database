@@ -48,7 +48,6 @@
 - One `Property` can be booked many times
 - One `Booking` has one `Payment`
 
-## ERD Image
 
 ## ERD Diagram
 
