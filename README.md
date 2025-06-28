@@ -2,23 +2,6 @@
 
 This project demonstrates the design and implementation of a relational database system for an Airbnb-style platform. It includes ER diagramming, normalization, SQL schema creation, and realistic data population — all tailored to support core features like property listing, booking, and payment processing.
 
----
-
-## 📁 Project Structure
-
-airbnb-database/
-├── ERD/
-│ ├── erd.png
-│ └── requirements.md
-├── database-script-0x01/
-│ ├── schema.sql
-│ └── README.md
-├── database-script-0x02/
-│ ├── seed.sql
-│ └── README.md
-├── normalization.md
-└── README.md
-
 
 ---
 
