@@ -50,5 +50,8 @@
 
 ## ERD Image
 
-[Include image or upload `erd.drawio` or `.png` here if required]
+## ERD Diagram
+
+![ERD](./erd.png)
+
 
