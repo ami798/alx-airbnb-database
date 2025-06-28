@@ -1,54 +1,79 @@
-# ERD - Entity Relationship Diagram for Airbnb Clone
+# Airbnb Backend Database Design
 
-## Entities and Attributes
+This project demonstrates the design and implementation of a relational database system for an Airbnb-style platform. It includes ER diagramming, normalization, SQL schema creation, and realistic data population — all tailored to support core features like property listing, booking, and payment processing.
 
-### 1. User
-- id (PK)
-- name
-- email (unique)
-- phone_number
-- created_at
-- updated_at
+---
 
-### 2. Property
-- id (PK)
-- user_id (FK → User.id)
-- title
-- description
-- address
-- city
-- country
-- price_per_night
-- max_guests
-- created_at
-- updated_at
+## 📁 Project Structure
 
-### 3. Booking
-- id (PK)
-- user_id (FK → User.id)
-- property_id (FK → Property.id)
-- start_date
-- end_date
-- total_price
-- created_at
-- updated_at
+airbnb-database/
+├── ERD/
+│ ├── erd.png
+│ └── requirements.md
+├── database-script-0x01/
+│ ├── schema.sql
+│ └── README.md
+├── database-script-0x02/
+│ ├── seed.sql
+│ └── README.md
+├── normalization.md
+└── README.md
 
-### 4. Payment
-- id (PK)
-- booking_id (FK → Booking.id)
-- amount
-- payment_method
-- payment_date
-- status
 
-## Relationships
+---
 
-- One `User` can have many `Properties`
-- One `User` can make many `Bookings`
-- One `Property` can be booked many times
-- One `Booking` has one `Payment`
+## 🎯 Project Goals
 
-## ERD Image
+- Model a real-world rental platform using relational database principles.
+- Visualize the system using an Entity-Relationship Diagram (ERD).
+- Normalize the database to 3rd Normal Form (3NF) to ensure efficiency and data integrity.
+- Create the database schema using SQL Data Definition Language (DDL).
+- Populate the database with meaningful sample data using SQL DML.
 
-[Include image or upload `erd.drawio` or `.png` here if required]
+---
 
+## ✅ Task Summary
+
+### 1. Entity-Relationship Diagram (ERD)
+- Visual representation of entities: `User`, `Property`, `Booking`, `Payment`, etc.
+- Relationships mapped with foreign keys.
+- File: `ERD/erd.png`
+
+### 2. Normalization
+- Applied 1NF, 2NF, and 3NF.
+- Removed redundancy and ensured functional dependency.
+- Documented in `normalization.md`
+
+### 3. Database Schema (DDL)
+- Used SQL `CREATE TABLE` statements to define all entities and relationships.
+- Included:
+  - Appropriate data types
+  - Primary and foreign keys
+  - Indexes for performance
+- File: `database-script-0x01/schema.sql`
+
+### 4. Seed Data (DML)
+- Added realistic sample data for:
+  - Multiple users and hosts
+  - Property listings
+  - Bookings and payments
+- File: `database-script-0x02/seed.sql`
+
+---
+
+## 💻 Technologies Used
+
+- **SQL (MySQL / PostgreSQL)**
+- **Draw.io** – For ERD
+- **Git & GitHub** – Version control and submission
+- **Markdown** – For documentation
+
+---
+
+## 📝 How to Use
+
+1. **Clone the repository**:
+
+```bash
+git clone https://github.com/your-username/airbnb-database.git
+cd airbnb-database
