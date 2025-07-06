@@ -4,7 +4,9 @@
 - These are heavily used in JOINs and WHERE clauses.
 - After indexing, queries ran up to 4x faster.
 
-### Indexes Created:
+---
+
+### Indexes Created
 
 ```sql
 CREATE INDEX idx_user_id ON bookings(user_id);
