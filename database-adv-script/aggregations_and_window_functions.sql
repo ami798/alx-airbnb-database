@@ -1,16 +1,12 @@
--- Task 2: Aggregations and Window Functions
-
--- Total number of bookings made by each user
-SELECT
-    user_id,
-    COUNT(*) AS total_bookings
+-- Query 1: Total number of bookings per user
+SELECT user_id, COUNT(*) AS total_bookings
 FROM bookings
 GROUP BY user_id;
 
--- Rank properties based on number of bookings using RANK()
-SELECT
-    property_id,
+-- Query 2: Rank properties by number of bookings using ROW_NUMBER
+SELECT 
+    property_id, 
     COUNT(*) AS total_bookings,
-    RANK() OVER (ORDER BY COUNT(*) DESC) AS booking_rank
+    ROW_NUMBER() OVER (ORDER BY COUNT(*) DESC) AS rank
 FROM bookings
 GROUP BY property_id;
