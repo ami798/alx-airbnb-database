@@ -1,13 +1,8 @@
-# Advanced SQL Queries for Airbnb Clone
+# Advanced SQL Queries – Join Practice
 
-This directory contains advanced SQL implementations to enhance performance, scalability, and query expressiveness.
+This project explores complex SQL JOINs including:
+- `INNER JOIN`: for records with matches in both tables.
+- `LEFT JOIN`: for all records from one table and matched records from another.
+- `FULL OUTER JOIN`: for all records from both tables, matched or not.
 
-## Files
-
-- `joins_queries.sql`: Advanced JOINs
-- `subqueries.sql`: Correlated and nested subqueries
-- `aggregations_and_window_functions.sql`: Ranking and grouping
-- `database_index.sql`, `index_performance.md`: Indexing and impact
-- `perfomance.sql`, `optimization_report.md`: Query optimization
-- `partitioning.sql`, `partition_performance.md`: Partitioning large tables
-- `performance_monitoring.md`: Query profiling and improvements
+All queries are in `complex_joins.sql`.
