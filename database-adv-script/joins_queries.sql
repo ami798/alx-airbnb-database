@@ -1,11 +1,50 @@
--- 1. List all bookings with user and property name
-SELECT b.id AS booking_id, u.name AS user_name, p.name AS property_name, b.start_date, b.end_date
-FROM bookings b
-JOIN users u ON b.user_id = u.id
-JOIN properties p ON b.property_id = p.id;
+-- 1. INNER JOIN: Retrieve all bookings and the respective users who made those bookings
+SELECT 
+    bookings.id AS booking_id,
+    bookings.start_date,
+    bookings.end_date,
+    users.id AS user_id,
+    users.name AS user_name
+FROM bookings
+INNER JOIN users ON bookings.user_id = users.id;
 
--- 2. Properties that were never booked (LEFT JOIN + WHERE NULL)
-SELECT p.id, p.name
-FROM properties p
-LEFT JOIN bookings b ON p.id = b.property_id
-WHERE b.id IS NULL;
+-- 2. LEFT JOIN: Retrieve all properties and their reviews (including properties with no reviews)
+SELECT 
+    properties.id AS property_id,
+    properties.name AS property_name,
+    reviews.id AS review_id,
+    reviews.rating,
+    reviews.comment
+FROM properties
+LEFT JOIN reviews ON properties.id = reviews.property_id;
+
+-- 3. FULL OUTER JOIN: Retrieve all users and all bookings (even if not linked)
+-- If your DBMS supports FULL OUTER JOIN (e.g., PostgreSQL):
+SELECT 
+    users.id AS user_id,
+    users.name AS user_name,
+    bookings.id AS booking_id,
+    bookings.start_date
+FROM users
+FULL OUTER JOIN bookings ON users.id = bookings.user_id;
+
+-- If you're using MySQL (which doesn't support FULL OUTER JOIN), use this workaround:
+-- (Uncomment this if needed and comment the above FULL OUTER JOIN)
+
+-- SELECT 
+--     users.id AS user_id,
+--     users.name AS user_name,
+--     bookings.id AS booking_id,
+--     bookings.start_date
+-- FROM users
+-- LEFT JOIN bookings ON users.id = bookings.user_id
+
+-- UNION
+
+-- SELECT 
+--     users.id AS user_id,
+--     users.name AS user_name,
+--     bookings.id AS booking_id,
+--     bookings.start_date
+-- FROM bookings
+-- LEFT JOIN users ON bookings.user_id = users.id;

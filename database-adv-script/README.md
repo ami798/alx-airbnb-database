@@ -1,8 +1,22 @@
-# Advanced SQL Queries – Join Practice
+# Task 0 – Complex SQL Joins
 
-This project explores complex SQL JOINs including:
-- `INNER JOIN`: for records with matches in both tables.
-- `LEFT JOIN`: for all records from one table and matched records from another.
-- `FULL OUTER JOIN`: for all records from both tables, matched or not.
+This script demonstrates the use of various SQL JOINs to combine data from multiple tables in the context of an Airbnb-like database.
 
-All queries are in `complex_joins.sql`.
+## Queries Overview
+
+1. **INNER JOIN**
+   - Retrieves all bookings and the users who made them.
+   - Only includes records where a booking has a valid user.
+
+2. **LEFT JOIN**
+   - Retrieves all properties and any corresponding reviews.
+   - Properties without reviews are still included with `NULL` review data.
+
+3. **FULL OUTER JOIN**
+   - Retrieves all users and all bookings.
+   - Includes users without bookings and bookings without users.
+   - If the database does not support `FULL OUTER JOIN`, a simulated version using `UNION` of `LEFT JOIN`s is provided.
+
+## File
+
+All SQL queries are in the `joins_queries.sql` file.
