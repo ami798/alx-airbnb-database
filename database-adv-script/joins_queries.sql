@@ -16,10 +16,10 @@ SELECT
     reviews.rating,
     reviews.comment
 FROM properties
-LEFT JOIN reviews ON properties.id = reviews.property_id;
+LEFT JOIN reviews ON properties.id = reviews.property_id
+ORDER BY properties.id;
 
 -- 3. FULL OUTER JOIN: Retrieve all users and all bookings (even if not linked)
--- If your DBMS supports FULL OUTER JOIN (e.g., PostgreSQL):
 SELECT 
     users.id AS user_id,
     users.name AS user_name,
@@ -28,9 +28,7 @@ SELECT
 FROM users
 FULL OUTER JOIN bookings ON users.id = bookings.user_id;
 
--- If you're using MySQL (which doesn't support FULL OUTER JOIN), use this workaround:
--- (Uncomment this if needed and comment the above FULL OUTER JOIN)
-
+-- If using MySQL, use this instead of FULL OUTER JOIN:
 -- SELECT 
 --     users.id AS user_id,
 --     users.name AS user_name,
@@ -38,9 +36,7 @@ FULL OUTER JOIN bookings ON users.id = bookings.user_id;
 --     bookings.start_date
 -- FROM users
 -- LEFT JOIN bookings ON users.id = bookings.user_id
-
 -- UNION
-
 -- SELECT 
 --     users.id AS user_id,
 --     users.name AS user_name,
