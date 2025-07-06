@@ -1,21 +1,19 @@
--- 1. Users who have made more than 2 bookings
+-- 1. Users who have made more than 3 bookings
 SELECT * FROM users
 WHERE id IN (
     SELECT user_id
     FROM bookings
     GROUP BY user_id
-    HAVING COUNT(*) > 2
+    HAVING COUNT(*) > 3
 );
 
--- 2. Properties with rating higher than average
+-- 2. Properties where the average rating is greater than 4.0
 SELECT * FROM properties
 WHERE id IN (
     SELECT property_id
     FROM reviews
     GROUP BY property_id
-    HAVING AVG(rating) > (
-        SELECT AVG(rating) FROM reviews
-    )
+    HAVING AVG(rating) > 4.0
 );
 
 -- 3. Users who have not made any bookings
