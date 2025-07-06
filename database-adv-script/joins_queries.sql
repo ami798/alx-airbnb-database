@@ -1,52 +1,19 @@
-SELECT
-    Bookings.booking_id,
-    Bookings.property_id,
-    Bookings.start_date,
-    Bookings.end_date,
-    Bookings.total_price,
-    Bookings.status,
-    Users.user_id,
-    Users.first_name,
-    Users.last_name,
-    Users.email
-FROM
-    Bookings
-INNER JOIN
-    Users ON Bookings.user_id = Users.user_id;
+
+SELECT b.id AS booking_id, u.name AS user_name, b.start_date, b.end_date
+FROM bookings b
+INNER JOIN users u ON b.user_id = u.id;
 
 
-SELECT
-    Properties.property_id,
-    Properties.host_id,
-    Properties.user_id,
-    Properties.name,
-    Properties.description,
-    Properties.location,
-    Properties.pricepernight,
-    Reviews.comment,
-    Reviews.rating
-FROM
-    Properties
-LEFT JOIN
-    Reviews ON Properties.property_id = Reviews.property_id;
-ORDER BY
-    Reviews.rating DESC NULLS LAST;
+SELECT p.id AS property_id, p.name, r.comment, r.rating
+FROM properties p
+LEFT JOIN reviews r ON p.id = r.property_id;
 
-SELECT
-    Users.user_id,
-    Users.first_name,
-    Users.last_name,
-    Users.email,
-    Users.phone_number,
-    Bookings.booking_id,
-    Bookings.start_date,
-    Bookings.end_date,
-    Bookings.total_price,
-    Bookings.status,
-    Bookings.user_id AS booking_user_id,
-FROM
-    Users
-FULL OUTER JOIN
-    Bookings ON Users.user_id = Bookings.user_id
-WHERE
-    Users.role = 'guest';
+
+-
+SELECT u.id AS user_id, u.name AS user_name, b.id AS booking_id
+FROM users u
+LEFT JOIN bookings b ON u.id = b.user_id
+UNION
+SELECT u.id, u.name, b.id
+FROM users u
+RIGHT JOIN bookings b ON u.id = b.user_id;
