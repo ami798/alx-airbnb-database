@@ -1,24 +1,34 @@
--- 1. Users who have made more than 3 bookings
-SELECT * FROM users
-WHERE id IN (
-    SELECT user_id
-    FROM bookings
-    GROUP BY user_id
-    HAVING COUNT(*) > 3
-);
-
--- 2. Properties where the average rating is greater than 4.0
-SELECT * FROM properties
-WHERE id IN (
-    SELECT property_id
-    FROM reviews
-    GROUP BY property_id
-    HAVING AVG(rating) > 4.0
-);
-
--- 3. Users who have not made any bookings
-SELECT * FROM users
-WHERE id NOT IN (
-    SELECT DISTINCT user_id FROM bookings
-    WHERE user_id IS NOT NULL
-);
+SELECT
+    property_id,
+    name,
+    description,
+    location,
+    pricepernight
+FROM
+    Properties
+WHERE
+    property_id IN (
+        SELECT
+            property_id
+        FROM
+            Reviews
+        GROUP BY
+            property_id
+        HAVING
+            AVG(rating) > 4.0
+    );
+SELECT
+    user_id,
+    first_name,
+    last_name,
+    email
+FROM
+    Users
+WHERE
+    user_id IN (
+        SELECT COUNT(*)
+        FROM
+            Bookings
+        WHERE
+            Users.user_id = Bookings.user_id
+    ) > 3;

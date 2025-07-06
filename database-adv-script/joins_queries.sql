@@ -1,46 +1,52 @@
--- 1. INNER JOIN: Retrieve all bookings and the respective users who made those bookings
-SELECT 
-    bookings.id AS booking_id,
-    bookings.start_date,
-    bookings.end_date,
-    users.id AS user_id,
-    users.name AS user_name
-FROM bookings
-INNER JOIN users ON bookings.user_id = users.id;
+SELECT
+    Bookings.booking_id,
+    Bookings.property_id,
+    Bookings.start_date,
+    Bookings.end_date,
+    Bookings.total_price,
+    Bookings.status,
+    Users.user_id,
+    Users.first_name,
+    Users.last_name,
+    Users.email
+FROM
+    Bookings
+INNER JOIN
+    Users ON Bookings.user_id = Users.user_id;
 
--- 2. LEFT JOIN: Retrieve all properties and their reviews (including properties with no reviews)
-SELECT 
-    properties.id AS property_id,
-    properties.name AS property_name,
-    reviews.id AS review_id,
-    reviews.rating,
-    reviews.comment
-FROM properties
-LEFT JOIN reviews ON properties.id = reviews.property_id
-ORDER BY properties.id;
 
--- 3. FULL OUTER JOIN: Retrieve all users and all bookings (even if not linked)
-SELECT 
-    users.id AS user_id,
-    users.name AS user_name,
-    bookings.id AS booking_id,
-    bookings.start_date
-FROM users
-FULL OUTER JOIN bookings ON users.id = bookings.user_id;
+SELECT
+    Properties.property_id,
+    Properties.host_id,
+    Properties.user_id,
+    Properties.name,
+    Properties.description,
+    Properties.location,
+    Properties.pricepernight,
+    Reviews.comment,
+    Reviews.rating
+FROM
+    Properties
+LEFT JOIN
+    Reviews ON Properties.property_id = Reviews.property_id;
+ORDER BY
+    Reviews.rating DESC NULLS LAST;
 
--- If using MySQL, use this instead of FULL OUTER JOIN:
--- SELECT 
---     users.id AS user_id,
---     users.name AS user_name,
---     bookings.id AS booking_id,
---     bookings.start_date
--- FROM users
--- LEFT JOIN bookings ON users.id = bookings.user_id
--- UNION
--- SELECT 
---     users.id AS user_id,
---     users.name AS user_name,
---     bookings.id AS booking_id,
---     bookings.start_date
--- FROM bookings
--- LEFT JOIN users ON bookings.user_id = users.id;
+SELECT
+    Users.user_id,
+    Users.first_name,
+    Users.last_name,
+    Users.email,
+    Users.phone_number,
+    Bookings.booking_id,
+    Bookings.start_date,
+    Bookings.end_date,
+    Bookings.total_price,
+    Bookings.status,
+    Bookings.user_id AS booking_user_id,
+FROM
+    Users
+FULL OUTER JOIN
+    Bookings ON Users.user_id = Bookings.user_id
+WHERE
+    Users.role = 'guest';

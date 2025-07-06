@@ -1,14 +1,14 @@
-### Index Performance Notes
+# Index Performance
 
-- Added indexes on `user_id`, `property_id`, and `start_date`.
-- These are heavily used in JOINs and WHERE clauses.
-- After indexing, queries ran up to 4x faster.
+## Overview
+Indexes play a critical role in speeding up database queries. This document outlines the indexing strategy, evaluation, and improvements made.
 
----
+## Strategy
+- **B-tree indexes** on:
+  - Primary keys (e.g., `user_id`, `listing_id`)
+  - Foreign keys (e.g., `user_id` in reviews table)
+  - Filter/search fields (e.g., `city`, `price`, `availability_date`)
 
-### Indexes Created
-
-```sql
-CREATE INDEX idx_user_id ON bookings(user_id);
-CREATE INDEX idx_property_id ON bookings(property_id);
-CREATE INDEX idx_start_date ON bookings(start_date);
+- **Composite Indexes** for multi-column WHERE clauses:
+  ```sql
+  CREATE INDEX idx_city_price ON listings (city, price);

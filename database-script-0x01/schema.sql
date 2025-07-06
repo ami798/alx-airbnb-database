@@ -1,56 +1,83 @@
+-- Enum types (PostgreSQL syntax)
+CREATE TYPE role AS ENUM ('guest', 'host', 'admin');
+CREATE TYPE booking_status AS ENUM ('pending', 'confirmed', 'canceled');
+CREATE TYPE payment_method AS ENUM ('credit_card', 'paypal', 'stripe');
 
 -- Users table
 CREATE TABLE Users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100),
-    email VARCHAR(100) UNIQUE,
-    phone_number VARCHAR(20),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    user_id UUID PRIMARY KEY,
+    first_name VARCHAR NOT NULL,
+    last_name VARCHAR NOT NULL,
+    email VARCHAR NOT NULL UNIQUE,
+    password_hash VARCHAR NOT NULL,
+    phone_number VARCHAR,
+    role role NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
---  Properties table
+CREATE INDEX idx_users_user_id ON Users(user_id);
+CREATE INDEX idx_users_email ON Users(email);
+
+-- Properties table
 CREATE TABLE Properties (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    title VARCHAR(255),
-    description TEXT,
-    address VARCHAR(255),
-    city VARCHAR(100),
-    country VARCHAR(100),
-    price_per_night DECIMAL(10, 2),
-    max_guests INT,
+    property_id UUID PRIMARY KEY,
+    host_id UUID NOT NULL REFERENCES Users(user_id),
+    name VARCHAR NOT NULL,
+    description TEXT NOT NULL,
+    location VARCHAR NOT NULL,
+    pricepernight DECIMAL NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES Users(id)
+    updated_at TIMESTAMP
 );
+
+CREATE INDEX idx_properties_property_id ON Properties(property_id);
 
 -- Bookings table
 CREATE TABLE Bookings (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    property_id INT,
-    start_date DATE,
-    end_date DATE,
-    total_price DECIMAL(10, 2),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES Users(id),
-    FOREIGN KEY (property_id) REFERENCES Properties(id)
+    booking_id UUID PRIMARY KEY,
+    property_id UUID NOT NULL REFERENCES Properties(property_id),
+    user_id UUID NOT NULL REFERENCES Users(user_id),
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    total_price DECIMAL NOT NULL,
+    status booking_status NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
---  Payments table
+CREATE INDEX idx_bookings_booking_id ON Bookings(booking_id);
+CREATE INDEX idx_bookings_property_id ON Bookings(property_id);
+
+-- Payments table
 CREATE TABLE Payments (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    booking_id INT,
-    amount DECIMAL(10, 2),
-    payment_method VARCHAR(50),
-    payment_date DATE,
-    status VARCHAR(50),
-    FOREIGN KEY (booking_id) REFERENCES Bookings(id)
+    payment_id UUID PRIMARY KEY,
+    booking_id UUID NOT NULL REFERENCES Bookings(booking_id),
+    amount DECIMAL NOT NULL,
+    payment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    payment_method payment_method NOT NULL
 );
 
--- Indexes
-CREATE INDEX idx_user_id ON Properties(user_id);
-CREATE INDEX idx_property_id ON Bookings(property_id);
-CREATE INDEX idx_booking_id ON Payments(booking_id);
+CREATE INDEX idx_payments_payment_id ON Payments(payment_id);
+CREATE INDEX idx_payments_booking_id ON Payments(booking_id);
+
+-- Reviews table
+CREATE TABLE Reviews (
+    review_id UUID PRIMARY KEY,
+    property_id UUID NOT NULL REFERENCES Properties(property_id),
+    user_id UUID NOT NULL REFERENCES Users(user_id),
+    rating INTEGER NOT NULL CHECK (rating BETWEEN 1 AND 5),
+    comment TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_reviews_review_id ON Reviews(review_id);
+
+-- Messages table
+CREATE TABLE Messages (
+    message_id UUID PRIMARY KEY,
+    sender_id UUID NOT NULL REFERENCES Users(user_id),
+    recipient_id UUID NOT NULL REFERENCES Users(user_id),
+    message_body TEXT NOT NULL,
+    sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_messages_message_id ON Messages(message_id);
